@@ -95,7 +95,8 @@ if [ "$ZIP" = 1 ]; then
   echo "==> Creating dist/$ZIP_NAME"
   rm -f "dist/$ZIP_NAME" "dist/$ZIP_NAME.sha256"
   # ditto keeps the signature and the bundle structure intact (plain zip can break them).
-  ditto -c -k --keepParent "$APP" "dist/$ZIP_NAME"
+  # --norsrc leaves out extended attributes, which other unzip tools turn into ._ files.
+  ditto -c -k --norsrc --keepParent "$APP" "dist/$ZIP_NAME"
   (cd dist && shasum -a 256 "$ZIP_NAME" > "$ZIP_NAME.sha256")
   echo "Done: dist/$ZIP_NAME ($(du -h "dist/$ZIP_NAME" | cut -f1))"
 fi

@@ -96,7 +96,7 @@ Si quieres comprobar que el archivo no se alteró, compara su huella con el `.sh
 
 ## Windows
 
-Todavía no hay descarga lista: hay que compilarla. El `.exe` no necesita nada aparte (tampoco el Visual C++ Redistributable); lo que Windows necesita para ejecutarlo, y el aviso de SmartScreen de la primera vez, están en [docs/windows.md](docs/windows.md#running-it). La guía paso a paso (requisitos, compilación, pruebas, desinstalación y qué hacer si algo falla) está en [docs/windows.md](docs/windows.md), en inglés. En Windows la bandeja no muestra texto: el porcentaje de Codex se dibuja dentro del ícono (o el de Claude si no hay Codex), y el detalle sale al pasar el ratón y en el panel del clic izquierdo.
+Descarga `CuantoQuedapp-<versión>-windows-x64.zip` desde [Releases](https://github.com/javieer133/cuantoquedapp/releases) y descomprímelo en una carpeta fija, o compílala tú. El soporte de Windows todavía es experimental: no ha pasado toda la lista de pruebas de [docs/windows.md](docs/windows.md). El `.exe` no necesita nada aparte (tampoco el Visual C++ Redistributable); lo que Windows necesita para ejecutarlo, y el aviso de SmartScreen de la primera vez, están en [docs/windows.md](docs/windows.md#running-it). La guía paso a paso (requisitos, compilación, pruebas, desinstalación y qué hacer si algo falla) está en [docs/windows.md](docs/windows.md), en inglés. En Windows la bandeja no muestra texto: el porcentaje de Codex se dibuja dentro del ícono (o el de Claude si no hay Codex), y el detalle sale al pasar el ratón y en el panel del clic izquierdo.
 
 ## Compilar desde el código
 
