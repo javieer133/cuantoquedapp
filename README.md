@@ -96,7 +96,7 @@ To check that the file was not altered, compare its fingerprint with the `.sha25
 
 ## Windows
 
-There is no ready-made download yet: you have to build it. The `.exe` is self-contained (no Visual C++ Redistributable needed); what Windows needs to run it, and the first-run SmartScreen notice, are in [docs/windows.md](docs/windows.md#running-it). The step-by-step guide (requirements, build, testing, uninstalling and what to do if something fails) is in [docs/windows.md](docs/windows.md). On Windows the tray shows no text: the Codex percentage is drawn inside the icon (or Claude's if there is no Codex), and the details show up on hover and in the left-click panel.
+Download `CuantoQuedapp-<version>-windows-x64.zip` from [Releases](https://github.com/javieer133/cuantoquedapp/releases) and unzip it into a fixed folder, or build it yourself. Windows support is still experimental: it has not been through the whole checklist in [docs/windows.md](docs/windows.md). The `.exe` is self-contained (no Visual C++ Redistributable needed); what Windows needs to run it, and the first-run SmartScreen notice, are in [docs/windows.md](docs/windows.md#running-it). The step-by-step guide (requirements, build, testing, uninstalling and what to do if something fails) is in [docs/windows.md](docs/windows.md). On Windows the tray shows no text: the Codex percentage is drawn inside the icon (or Claude's if there is no Codex), and the details show up on hover and in the left-click panel.
 
 ## Build from source
 

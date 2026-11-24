@@ -1,9 +1,9 @@
-﻿# Compila cuantoquedapp para Windows y deja los .exe en dist\windows.
+﻿# Builds cuantoquedapp for Windows and leaves the .exe files in dist\windows.
 #
-# Uso, desde una terminal de PowerShell:
+# Usage, from a PowerShell terminal:
 #   powershell -ExecutionPolicy Bypass -File scripts\build-windows.ps1
 #
-# Requisitos: ver docs\windows.md (Rust con el toolchain MSVC y las Build Tools de Visual Studio).
+# Requirements: see docs\windows.md (Rust with the MSVC toolchain and the Visual Studio Build Tools).
 
 $ErrorActionPreference = "Stop"
 Set-Location (Split-Path -Parent $PSScriptRoot)
