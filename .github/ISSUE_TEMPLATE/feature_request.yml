@@ -1,0 +1,27 @@
+name: Feature request
+description: An idea to make CuantoQuedapp more useful.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: English or Spanish are both fine.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What you want to do
+      description: The situation and what gets in the way today, before any solution.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: How it could work
+      description: What you would see or click. A sketch or screenshot helps.
+  - type: dropdown
+    id: platform
+    attributes:
+      label: System
+      multiple: true
+      options:
+        - macOS
+        - Windows

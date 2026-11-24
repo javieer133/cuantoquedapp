@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security problem
+    url: https://github.com/javieer133/cuantoquedapp/security/advisories/new
+    about: Report it privately, not in a public issue.
+  - name: Installing or using the app
+    url: https://github.com/javieer133/cuantoquedapp#troubleshooting
+    about: The README's troubleshooting table covers the usual first-run problems.
