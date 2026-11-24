@@ -103,14 +103,14 @@ Descarga `CuantoQuedapp-<versión>-windows-x64.zip` desde [Releases](https://git
 Útil si tienes un Mac Intel o quieres modificarla. Necesitas [Rust](https://rustup.rs), Git y [cargo-about](https://github.com/EmbarkStudios/cargo-about) (`cargo install cargo-about --locked --features cli`), que escribe dentro de la app los avisos de licencias de terceros:
 
 ```
-git clone https://github.com/javieer133/cuantoquedapp.git
+git clone --branch main https://github.com/javieer133/cuantoquedapp.git
 cd cuantoquedapp
 scripts/package-macos.sh              # crea dist/CuantoQuedapp.app
 scripts/package-macos.sh --install    # además la copia a /Applications
 scripts/package-macos.sh --zip        # además crea el zip y su huella para compartir
 ```
 
-Se puede combinar (`--install --zip`). La app queda firmada de forma local («ad hoc»), por lo que funciona sin avisos en el Mac que la compiló. Para repartirla a otros Macs sin el aviso de la primera vez haría falta una firma Developer ID de Apple y notarización (de pago, no incluidas).
+`main` tiene la última versión publicada; `develop`, la rama por defecto, el trabajo en curso. Se puede combinar (`--install --zip`). La app queda firmada de forma local («ad hoc»), por lo que funciona sin avisos en el Mac que la compiló. Para repartirla a otros Macs sin el aviso de la primera vez haría falta una firma Developer ID de Apple y notarización (de pago, no incluidas).
 
 ## En la terminal
 

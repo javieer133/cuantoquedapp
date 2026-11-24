@@ -103,14 +103,14 @@ Download `CuantoQuedapp-<version>-windows-x64.zip` from [Releases](https://githu
 Useful if you have an Intel Mac or want to change it. You need [Rust](https://rustup.rs), Git and [cargo-about](https://github.com/EmbarkStudios/cargo-about) (`cargo install cargo-about --locked --features cli`), which writes the third-party license notices into the app:
 
 ```
-git clone https://github.com/javieer133/cuantoquedapp.git
+git clone --branch main https://github.com/javieer133/cuantoquedapp.git
 cd cuantoquedapp
 scripts/package-macos.sh              # creates dist/CuantoQuedapp.app
 scripts/package-macos.sh --install    # also copies it to /Applications
 scripts/package-macos.sh --zip        # also creates the zip and its fingerprint for sharing
 ```
 
-The flags can be combined (`--install --zip`). The app is signed locally ("ad hoc"), so it runs without warnings on the Mac that built it. Handing it to other Macs without the first-run notice would need an Apple Developer ID signature and notarization (paid, not included).
+`main` holds the latest release; `develop`, the default branch, has the work in progress. The flags can be combined (`--install --zip`). The app is signed locally ("ad hoc"), so it runs without warnings on the Mac that built it. Handing it to other Macs without the first-run notice would need an Apple Developer ID signature and notarization (paid, not included).
 
 ## In the terminal
 
