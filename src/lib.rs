@@ -1,0 +1,39 @@
+// Interface texts (see i18n.rs); `t!` always gets an explicit locale.
+rust_i18n::i18n!("locales");
+
+pub mod app_server;
+pub mod atomic_write;
+pub mod autostart;
+pub mod binary_search;
+pub mod bounded_line;
+pub mod claude_limits;
+pub mod claude_usage;
+pub mod cli;
+pub mod codex;
+pub mod codex_binary;
+pub mod debug_log;
+pub mod i18n;
+pub mod legacy;
+pub mod live_codex;
+pub mod live_source;
+#[cfg(target_os = "macos")]
+pub mod mac_title;
+pub mod menu_bar_icons;
+pub mod monitor;
+pub mod panel;
+pub mod panel_view;
+pub mod png;
+pub mod presentation;
+pub mod process_tree;
+pub mod reader;
+pub mod reading;
+pub mod reset_watch;
+pub mod selection_state;
+pub mod session_cache;
+pub mod session_files;
+pub mod settings;
+pub mod single_instance;
+pub mod small_file;
+pub mod sources;
+pub mod tray;
+pub mod tray_badge;

@@ -1,0 +1,306 @@
+_version: 2
+# Interface texts. Each key has "es" and "en"; a test fails if one is missing or unused.
+# %{name} is filled in by the code. Keep the same placeholders in both languages.
+
+# ---- Windows and times ----
+window.five_hours:
+  es: "5 horas"
+  en: "5 hours"
+window.week:
+  es: "Semana"
+  en: "Week"
+window.minutes:
+  es: "%{n} min"
+  en: "%{n} min"
+age.future:
+  es: "dato con fecha futura; revisa el reloj"
+  en: "data from the future; check the clock"
+age.minutes:
+  es: "dato de hace %{n} min"
+  en: "data from %{n} min ago"
+age.hours:
+  es: "dato de hace %{n} h"
+  en: "data from %{n} h ago"
+remaining.minutes:
+  es: "en %{m} min"
+  en: "in %{m} min"
+remaining.hours:
+  es: "en %{h} h"
+  en: "in %{h} h"
+remaining.hours_minutes:
+  es: "en %{h} h %{m} min"
+  en: "in %{h} h %{m} min"
+remaining.days:
+  es: "en %{d} d"
+  en: "in %{d} d"
+remaining.days_hours:
+  es: "en %{d} d %{h} h"
+  en: "in %{d} d %{h} h"
+when.today:
+  es: "hoy %{time}"
+  en: "today %{time}"
+when.date:
+  es: "%{weekday} %{day}-%{month} %{time}"
+  en: "%{weekday} %{month} %{day} %{time}"
+day.mon:
+  es: "lun"
+  en: "Mon"
+day.tue:
+  es: "mar"
+  en: "Tue"
+day.wed:
+  es: "mié"
+  en: "Wed"
+day.thu:
+  es: "jue"
+  en: "Thu"
+day.fri:
+  es: "vie"
+  en: "Fri"
+day.sat:
+  es: "sáb"
+  en: "Sat"
+day.sun:
+  es: "dom"
+  en: "Sun"
+month.jan:
+  es: "ene"
+  en: "Jan"
+month.feb:
+  es: "feb"
+  en: "Feb"
+month.mar:
+  es: "mar"
+  en: "Mar"
+month.apr:
+  es: "abr"
+  en: "Apr"
+month.may:
+  es: "may"
+  en: "May"
+month.jun:
+  es: "jun"
+  en: "Jun"
+month.jul:
+  es: "jul"
+  en: "Jul"
+month.aug:
+  es: "ago"
+  en: "Aug"
+month.sep:
+  es: "sep"
+  en: "Sep"
+month.oct:
+  es: "oct"
+  en: "Oct"
+month.nov:
+  es: "nov"
+  en: "Nov"
+month.dec:
+  es: "dic"
+  en: "Dec"
+reset.text:
+  es: "se reinicia %{remaining} (%{when})"
+  en: "resets %{remaining} (%{when})"
+reset.html:
+  es: "se reinicia <b>%{remaining}</b> (%{when})"
+  en: "resets <b>%{remaining}</b> (%{when})"
+reset.invalid:
+  es: "fecha de reinicio inválida"
+  en: "invalid reset date"
+reset.expired:
+  es: "ya se reinició; dato desactualizado"
+  en: "already reset; data outdated"
+reset.refreshing:
+  es: "Se reinició; actualizando…"
+  en: "Reset; refreshing…"
+
+# ---- Report (terminal and text menu) ----
+report.plan:
+  es: "plan %{plan}"
+  en: "%{plan} plan"
+report.used:
+  es: "usados"
+  en: "used"
+report.no_data:
+  es: "Aún no hay datos de límites"
+  en: "No limit data yet"
+credits.line:
+  es: "Créditos extra: %{extra}"
+  en: "Extra credits: %{extra}"
+credits.unlimited:
+  es: "ilimitados"
+  en: "unlimited"
+credits.yes_balance:
+  es: "sí (saldo %{balance})"
+  en: "yes (balance %{balance})"
+credits.no:
+  es: "no"
+  en: "no"
+credits.balance:
+  es: "saldo %{balance}"
+  en: "balance %{balance}"
+
+# ---- Menu bar title and tooltip ----
+title.reader_lost:
+  es: "Codex ?% · sin lectura"
+  en: "Codex ?% · not reading"
+note.outdated:
+  es: "desactualizado"
+  en: "outdated"
+note.warning:
+  es: "aviso"
+  en: "warning"
+note.old:
+  es: "dato antiguo"
+  en: "old data"
+tooltip.no_data:
+  es: "Codex: sin datos"
+  en: "Codex: no data"
+tooltip.reading:
+  es: "Codex: leyendo…"
+  en: "Codex: reading…"
+
+# ---- Panel and menus ----
+panel.alert:
+  es: "⚠ Pasaste el %{threshold} %"
+  en: "⚠ Above %{threshold} %"
+panel.refreshing:
+  es: "Actualizando…"
+  en: "Refreshing…"
+menu.refresh:
+  es: "Actualizar ahora"
+  en: "Refresh now"
+menu.settings:
+  es: "Ajustes"
+  en: "Settings"
+menu.quit:
+  es: "Salir"
+  en: "Quit"
+menu.reading:
+  es: "Leyendo límites de Codex…"
+  en: "Reading Codex limits…"
+menu.left_click:
+  es: "Clic izquierdo: ver límites"
+  en: "Left click: see limits"
+menu.alert_off:
+  es: "Desactivada"
+  en: "Off"
+menu.bar_five_hours:
+  es: "Número de la barra: 5 horas"
+  en: "Menu bar number: 5 hours"
+menu.bar_week:
+  es: "Número de la barra: semana"
+  en: "Menu bar number: week"
+settings.done:
+  es: "Listo"
+  en: "Done"
+settings.show:
+  es: "Mostrar"
+  en: "Show"
+settings.bar_number:
+  es: "Número de la barra"
+  en: "Menu bar number"
+settings.alert:
+  es: "Alerta al superar"
+  en: "Alert above"
+settings.alert_off:
+  es: "No"
+  en: "Off"
+settings.theme:
+  es: "Tema"
+  en: "Theme"
+settings.language:
+  es: "Idioma"
+  en: "Language"
+settings.general:
+  es: "General"
+  en: "General"
+settings.five_hour_window:
+  es: "Ventana de 5 horas"
+  en: "5-hour window"
+settings.week_window:
+  es: "Ventana semanal"
+  en: "Weekly window"
+theme.auto:
+  es: "Automático"
+  en: "Automatic"
+theme.light:
+  es: "Claro"
+  en: "Light"
+theme.dark:
+  es: "Oscuro"
+  en: "Dark"
+language.system:
+  es: "Sistema"
+  en: "System"
+autostart.label:
+  es: "Iniciar al abrir sesión"
+  en: "Start at login"
+autostart.menu_unavailable:
+  es: "Iniciar al abrir sesión (solo con la app instalada)"
+  en: "Start at login (only with the app installed)"
+autostart.needs_install:
+  es: "Disponible con la app instalada en Aplicaciones"
+  en: "Available with the app installed in Applications"
+
+# ---- Notices (problems shown under the limits) ----
+notice.reader_lost:
+  es: "La lectura de Codex se detuvo; reinicia la app"
+  en: "Reading Codex stopped; restart the app"
+notice.line_format:
+  es: "No pude leer el formato (%{file}, línea %{line}): %{reason}"
+  en: "Could not read the format (%{file}, line %{line}): %{reason}"
+notice.more_errors:
+  es: "%{file}: %{count} errores adicionales"
+  en: "%{file}: %{count} more errors"
+notice.file_unreadable:
+  es: "No pude leer %{file} (%{kind})"
+  en: "Could not read %{file} (%{kind})"
+notice.codex_not_found:
+  es: "No encontré Codex en este equipo"
+  en: "Codex not found on this computer"
+notice.search_failed:
+  es: "No pude buscar los archivos de Codex (%{kind})"
+  en: "Could not search the Codex files (%{kind})"
+notice.invalid_events:
+  es: "No pude leer el formato de %{count} evento(s) de límites: fecha o valores inválidos"
+  en: "Could not read the format of %{count} limit event(s): invalid date or values"
+line.too_long:
+  es: "línea demasiado larga; se omitió"
+  en: "line too long; skipped"
+line.read_error:
+  es: "error de lectura (%{kind})"
+  en: "read error (%{kind})"
+line.unexpected:
+  es: "formato inesperado (%{category}, columna %{column})"
+  en: "unexpected format (%{category}, column %{column})"
+
+# ---- Command line ----
+cli.usage_tray:
+  es: "Uso: cuantoquedapp [--folder <ruta>]\nMuestra el ícono en la barra de menú. Para la consola: cuantoquedapp-cli."
+  en: "Usage: cuantoquedapp [--folder <path>]\nShows the menu bar icon. For the terminal: cuantoquedapp-cli."
+cli.usage_cli:
+  es: "Uso: cuantoquedapp-cli [--folder <ruta>] [--now <RFC3339>] [--live]\n--live: además de los archivos, consulta Codex y Claude en vivo (como el ícono); no se combina con --now."
+  en: "Usage: cuantoquedapp-cli [--folder <path>] [--now <RFC3339>] [--live]\n--live: besides the files, asks Codex and Claude live (like the icon); cannot be combined with --now."
+cli.use_cli:
+  es: "Para la consola usa cuantoquedapp-cli."
+  en: "For the terminal, use cuantoquedapp-cli."
+cli.missing_folder:
+  es: "Falta la ruta de --folder"
+  en: "Missing the path after --folder"
+cli.missing_now:
+  es: "Falta la fecha de --now"
+  en: "Missing the date after --now"
+cli.bad_now:
+  es: "--now requiere una fecha RFC3339 con zona horaria"
+  en: "--now needs an RFC3339 date with a time zone"
+cli.unknown:
+  es: "Argumento desconocido o repetido: %{arg}"
+  en: "Unknown or repeated argument: %{arg}"
+cli.live_and_now:
+  es: "--live no se combina con --now (el dato en vivo es de ahora)"
+  en: "--live cannot be combined with --now (live data is from now)"
+cli.no_home:
+  es: "No pude localizar tu carpeta personal; usa --folder <ruta>"
+  en: "Could not find your home folder; use --folder <path>"

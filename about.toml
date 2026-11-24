@@ -1,0 +1,21 @@
+# cargo-about: the third-party license notices shipped with the app (see scripts/package-macos.sh
+# and scripts/build-windows.ps1). Generating fails if a dependency uses a license not listed here,
+# so a new license is a conscious decision.
+accepted = [
+    "0BSD",
+    "Apache-2.0",
+    "Apache-2.0 WITH LLVM-exception",
+    "BSD-3-Clause",
+    "CC0-1.0",
+    "ISC",
+    "MIT",
+    "MIT-0",
+    "MPL-2.0",
+    "Unicode-3.0",
+    "Unlicense",
+    "Zlib",
+]
+# Only what ships: the macOS and Windows builds, without build or dev-only dependencies.
+targets = ["aarch64-apple-darwin", "x86_64-apple-darwin", "x86_64-pc-windows-msvc"]
+ignore-build-dependencies = true
+ignore-dev-dependencies = true

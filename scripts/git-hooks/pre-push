@@ -1,0 +1,14 @@
+#!/bin/sh
+# Refuses pushing to main or develop: they change only through PRs (see CONTRIBUTING.md).
+# A local guard against pushing to them by mistake.
+# Enable once per clone: git config core.hooksPath scripts/git-hooks
+status=0
+while read -r local_ref local_sha remote_ref remote_sha; do
+  case "$remote_ref" in
+    refs/heads/main | refs/heads/develop)
+      echo "pre-push: no pushing to ${remote_ref#refs/heads/}; use a feature/* or fix/* branch and open a PR." >&2
+      status=1
+      ;;
+  esac
+done
+exit $status

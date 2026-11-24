@@ -1,0 +1,29 @@
+# Check of Cargo.lock against the RustSec advisory database: weekly (new advisories for
+# what is already locked) and on every PR or push to develop that changes dependencies.
+# Only real vulnerabilities fail the run; "unmaintained" notices (chrono) are warnings.
+name: Audit
+
+on:
+  schedule:
+    - cron: "17 12 * * 1"
+  pull_request:
+    paths: [Cargo.lock, Cargo.toml]
+  push:
+    branches: [develop]
+    paths: [Cargo.lock, Cargo.toml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # Actions pinned to reviewed commits (the tag in the comment); Dependabot updates both.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: taiki-e/install-action@fe3acb53a98b62c772db35de75ce0e4595e7ca8c # v2
+        with:
+          tool: cargo-audit
+      - run: cargo audit

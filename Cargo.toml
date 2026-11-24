@@ -1,0 +1,52 @@
+[package]
+name = "cuantoquedapp"
+version = "0.3.0"
+edition = "2024"
+description = "Menu bar (macOS) and tray (Windows) icon with your Codex and Claude Code usage limits"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/javieer133/cuantoquedapp"
+default-run = "cuantoquedapp"
+
+[dependencies]
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+tao = "0.37.3"
+tray-icon = "0.26.1"
+chrono = "0.4"
+auto-launch = "0.6.0"
+wry = "0.57.3"
+memchr = "2"
+rust-i18n = "4.2.4"
+
+# macOS only: one status item with inline icons needs an attributed title, which tray-icon
+# does not offer; NSLocale gives the UI language (see i18n.rs). These crates are already in
+# the build as dependencies of tray-icon.
+[target.'cfg(target_os = "macos")'.dependencies]
+objc2 = "0.6"
+objc2-app-kit = { version = "0.3.2", default-features = false, features = [
+    "std", "NSAttributedString", "NSButton", "NSCell", "NSColor", "NSControl", "NSFont", "NSImage",
+    "NSResponder", "NSStatusBarButton", "NSStatusItem", "NSText", "NSTextAttachment", "NSView",
+] }
+objc2-foundation = { version = "0.3.2", default-features = false, features = [
+    "std", "NSArray", "NSAttributedString", "NSData", "NSDictionary", "NSGeometry", "NSLocale",
+    "NSString",
+] }
+
+# Windows only: a Job Object kills the whole tree of `claude`/`codex` (see process_tree.rs),
+# and the UI language comes from Win32_Globalization (see i18n.rs).
+# Same version tao/wry already use.
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61.2", features = [
+    "Win32_Foundation", "Win32_Globalization", "Win32_Security", "Win32_System_JobObjects",
+    "Win32_System_Threading",
+] }
+
+# Only needed when building on Windows (see build.rs).
+[target.'cfg(windows)'.build-dependencies]
+winresource = "0.1.34"
+
+# Smaller, faster binary for the packaged app (debug builds are unaffected).
+[profile.release]
+lto = true
+strip = true
+codegen-units = 1
