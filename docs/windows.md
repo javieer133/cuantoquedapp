@@ -6,6 +6,8 @@ The app follows the Windows display language (English or Spanish); you can force
 
 ## Running it
 
+Get it from [Releases](https://github.com/javieer133/cuantoquedapp/releases): `CuantoQuedapp-<version>-windows-x64.zip` holds `cuantoquedapp.exe` (tray), `cuantoquedapp-cli.exe` (terminal) and `THIRD-PARTY-LICENSES.html`. Or build it (see the next sections).
+
 What a computer needs to run `cuantoquedapp.exe` (building it needs more, see the next section):
 
 - **Windows 10 or 11, 64-bit.** The `.exe` is self-contained: the C runtime is inside it, so the Visual C++ Redistributable is not needed, and neither are the Visual Studio Build Tools.

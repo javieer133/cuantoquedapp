@@ -1,0 +1,203 @@
+# Builds the macOS and Windows zips and creates a draft GitHub release when a vX.Y.Z tag is
+# pushed. The maintainer reviews the draft, writes "What's new" and publishes it by hand.
+# On a PR that touches the packaging it only builds and checks the zips (kept as run
+# artifacts, handy for testing), without releasing anything.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  pull_request:
+    paths:
+      - .github/workflows/release.yml
+      - scripts/package-macos.sh
+      - scripts/build-windows.ps1
+      - about.toml
+      - about.hbs
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  CARGO_TERM_COLOR: always
+  CARGO_INCREMENTAL: 0
+
+jobs:
+  meta:
+    name: version
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      # Actions pinned to reviewed commits (the tag in the comment); Dependabot updates both.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+      # A release tag must match Cargo.toml and sit on main (see CONTRIBUTING.md).
+      - id: version
+        run: |
+          version="$(sed -n 's/^version = "\(.*\)"/\1/p' Cargo.toml | head -1)"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          if [ "$GITHUB_REF_TYPE" = tag ]; then
+            if [ "$GITHUB_REF_NAME" != "v$version" ]; then
+              echo "::error::Tag $GITHUB_REF_NAME does not match version $version in Cargo.toml"
+              exit 1
+            fi
+            if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+              echo "::error::Tag $GITHUB_REF_NAME is not on main"
+              exit 1
+            fi
+          fi
+
+  macos:
+    name: macOS zip
+    needs: meta
+    runs-on: macos-latest
+    timeout-minutes: 30
+    env:
+      VERSION: ${{ needs.meta.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      # Pinned by commit, so the channel is not in the ref and must be named. No build cache:
+      # what ships is built from scratch.
+      - uses: dtolnay/rust-toolchain@39008827e6b4319a349e9a42dfc90579dd25f1ca # stable
+        with:
+          toolchain: stable
+      - uses: taiki-e/install-action@fe3acb53a98b62c772db35de75ce0e4595e7ca8c # v2
+        with:
+          tool: cargo-about@0.9.3
+      - run: scripts/package-macos.sh --zip
+      - name: Check the zip
+        run: |
+          app=dist/CuantoQuedapp.app
+          zip="CuantoQuedapp-$VERSION-macos-arm64.zip"
+          for bin in "$app"/Contents/MacOS/*; do
+            if strings "$bin" | grep -q /Users/; then
+              echo "::error::$bin contains a /Users/ path"
+              exit 1
+            fi
+            lipo -archs "$bin" | grep -qx arm64 || { echo "::error::$bin is not arm64"; exit 1; }
+          done
+          plist="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$app/Contents/Info.plist")"
+          [ "$plist" = "$VERSION" ] || { echo "::error::Info.plist says $plist"; exit 1; }
+          test -s "$app/Contents/Resources/THIRD-PARTY-LICENSES.html"
+          (cd dist && shasum -a 256 -c "$zip.sha256")
+          # What a downloader gets: unpack it and check the signature survived.
+          mkdir "$RUNNER_TEMP/unzipped"
+          ditto -x -k "dist/$zip" "$RUNNER_TEMP/unzipped"
+          codesign --verify --deep --strict "$RUNNER_TEMP/unzipped/CuantoQuedapp.app"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: macos
+          path: dist/CuantoQuedapp-*-macos-arm64.zip*
+          if-no-files-found: error
+          retention-days: 14
+
+  windows:
+    name: Windows zip
+    needs: meta
+    runs-on: windows-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      VERSION: ${{ needs.meta.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: dtolnay/rust-toolchain@39008827e6b4319a349e9a42dfc90579dd25f1ca # stable
+        with:
+          toolchain: stable
+      - uses: taiki-e/install-action@fe3acb53a98b62c772db35de75ce0e4595e7ca8c # v2
+        with:
+          tool: cargo-about@0.9.3
+      - run: ./scripts/build-windows.ps1
+      # docs/windows.md, item 12: the .exe files must not need the Visual C++ runtime.
+      - name: Check the .exe files
+        run: |
+          if (-not (Test-Path dist\windows\THIRD-PARTY-LICENSES.html)) { throw "THIRD-PARTY-LICENSES.html is missing" }
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          $dumpbin = & $vswhere -latest -products * -find "VC\Tools\MSVC\**\bin\Hostx64\x64\dumpbin.exe" | Select-Object -First 1
+          if (-not $dumpbin) { throw "dumpbin.exe not found" }
+          foreach ($exe in "cuantoquedapp.exe", "cuantoquedapp-cli.exe") {
+            $deps = & $dumpbin /nologo /dependents "dist\windows\$exe" | Out-String
+            Write-Host $deps
+            if ($deps -match "(?i)vcruntime|msvcp|ucrtbase|api-ms-win-crt|webview2loader") {
+              throw "$exe depends on a runtime DLL that a clean Windows may lack"
+            }
+          }
+      - name: Check for build paths
+        shell: bash
+        run: |
+          if grep -a -q -F runneradmin dist/windows/*.exe; then
+            echo "::error::An .exe contains the runner's user folder"
+            exit 1
+          fi
+      - name: Zip
+        run: |
+          $name = "CuantoQuedapp-$env:VERSION-windows-x64.zip"
+          Compress-Archive -DestinationPath "dist\$name" -Path `
+            dist\windows\cuantoquedapp.exe, dist\windows\cuantoquedapp-cli.exe, dist\windows\THIRD-PARTY-LICENSES.html
+          $hash = (Get-FileHash -Algorithm SHA256 "dist\$name").Hash.ToLower()
+          # Same format as shasum, so `shasum -a 256 -c` works on it too.
+          [IO.File]::WriteAllText("$PWD\dist\$name.sha256", "$hash  $name`n")
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: windows
+          path: dist/CuantoQuedapp-*-windows-x64.zip*
+          if-no-files-found: error
+          retention-days: 14
+
+  release:
+    name: draft release
+    if: github.ref_type == 'tag'
+    needs: [meta, macos, windows]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # The only job that can write to the repo, and it runs no project code.
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Create the draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          VERSION: ${{ needs.meta.outputs.version }}
+        run: |
+          cd dist
+          sha256sum -c ./*.sha256
+          BLOB="https://github.com/$GH_REPO/blob/$GITHUB_REF_NAME"
+          cat > notes.md <<EOF
+          <!-- Draft made by the Release workflow: write "What's new" (and its Spanish version), then publish. -->
+
+          ## What's new
+
+          ## Downloads
+
+          | | File | Install |
+          |---|---|---|
+          | macOS 11+ (Apple Silicon) | \`CuantoQuedapp-$VERSION-macos-arm64.zip\` | [README]($BLOB/README.md#install-on-the-mac) |
+          | Windows 10/11, 64-bit (experimental) | \`CuantoQuedapp-$VERSION-windows-x64.zip\` | [docs/windows.md]($BLOB/docs/windows.md#running-it) |
+
+          Neither is signed with a paid certificate, so macOS (Gatekeeper) and Windows (SmartScreen) warn on the first run; the install steps say how to open it. Each zip has a \`.sha256\` next to it: \`shasum -a 256 -c <file>.sha256\`.
+
+          ## Español
+
+          ### Novedades
+
+          ### Descargas
+
+          Mac con Apple Silicon (macOS 11 o posterior): \`CuantoQuedapp-$VERSION-macos-arm64.zip\`, pasos en el [README]($BLOB/README.es.md#instalar-en-el-mac). Windows 10/11 de 64 bits (experimental): \`CuantoQuedapp-$VERSION-windows-x64.zip\`. Ninguno está firmado con un certificado de pago: la primera vez macOS y Windows avisan, y los pasos de instalación explican cómo abrirlo.
+          EOF
+          gh release create "$GITHUB_REF_NAME" --draft --verify-tag \
+            --title "CuantoQuedapp $VERSION" --notes "$(cat notes.md)" --generate-notes \
+            ./CuantoQuedapp-*.zip ./CuantoQuedapp-*.zip.sha256
