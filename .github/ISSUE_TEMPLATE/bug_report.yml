@@ -1,0 +1,71 @@
+name: Bug report
+description: Something in CuantoQuedapp does not work as it should.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. English or Spanish are both fine.
+
+        **Privacy:** never paste conversation content, tokens or files from `~/.codex` or `~/.claude`. Screenshots of the panel and `debug.log` are fine: the log only holds events and geometry.
+
+        A security problem? Do not open an issue: use [private vulnerability reporting](https://github.com/javieer133/cuantoquedapp/security/advisories/new).
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you saw, and a screenshot of the panel or menu bar if it helps.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: If you know them. "It happens after leaving the computer on overnight" counts.
+  - type: dropdown
+    id: platform
+    attributes:
+      label: System
+      options:
+        - macOS
+        - Windows
+    validations:
+      required: true
+  - type: input
+    id: os-version
+    attributes:
+      label: System version
+      placeholder: macOS 15.4, Windows 11 24H2…
+  - type: input
+    id: app-version
+    attributes:
+      label: CuantoQuedapp version
+      description: The release you downloaded, or the commit if you built it.
+      placeholder: "0.3.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: tools
+    attributes:
+      label: Which tool shows the problem
+      options:
+        - Codex
+        - Claude
+        - Both
+        - Neither (the app itself)
+    validations:
+      required: true
+  - type: textarea
+    id: debug-log
+    attributes:
+      label: debug.log (optional)
+      description: |
+        Quit the app and open it with `CUANTOQUEDAPP_DEBUG=1` (see "Troubleshooting" in the README, or `docs/windows.md` on Windows), reproduce the problem and paste `debug.log` here.
+        macOS: `~/Library/Caches/cuantoquedapp/debug.log`. Windows: `%LOCALAPPDATA%\cuantoquedapp\debug.log`.
+      render: text
